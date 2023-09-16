@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'account',
     'product',
     'bootstrap5',
+    'cart',
 
     
 ]
@@ -141,3 +142,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ###added mannually###
 
 AUTH_USER_MODEL = 'account.User'
+
+SESSION_COOKIE_AGE = 86400
+CART_ID ='cart'

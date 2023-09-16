@@ -26,6 +26,7 @@ urlpatterns = [
 #product_app_path###
     path('',include('account.urls')),
     path('',include('product.urls')),
+    path('',include('cart.urls')),
 
 
 

@@ -1,3 +1,11 @@
-<a href="#">2</a>
-<a href="#" class="active">4</a>
-<a href="#">6</a>
+{% if object_list.has_previous %}
+<a href="?page={{object_list.previous_page_number}}"><</a>
+{% endif %}
+{% for page  in paginator.page_range %}
+    {% if page > object_list.number|add:"-5" and page < object_list.number|add:'+5'  %}
+        <a href="?page={{page}}" class=" {% if page == object_list.number %}active{% endif %}">{{page}}</a>
+    {% endif %} 
+{% endfor %}
+{% if object_list.has_next %}
+<a href="?page={{object_list.next_page_number}}">></a>
+{% endif %}

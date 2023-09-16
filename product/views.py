@@ -1,15 +1,25 @@
+from django.shortcuts import render
+from django.db.models import Q
 from typing import Any, Dict
 from django.shortcuts import render
 from django.views.generic import (
     TemplateView,
     DetailView,
-    ListView
+    ListView,
+    View
 )
 
 from .models import (
     Category,
     Product,
     Slider
+)
+
+from django.core.paginator import(
+    PageNotAnInteger,
+    EmptyPage,
+    InvalidPage,
+    Paginator
 )
 
 
@@ -50,10 +60,50 @@ class CategorytDetails(DetailView):
         context['products'] = self.get_object().products.all()
         return context
     
+
+class CustomPaginator:
+    def __init__(self,request, queryset, paginated_by) -> None:
+        self.paginator = Paginator(queryset,paginated_by)
+        self.paginated_by = paginated_by
+        self.queryset = queryset
+        self.page = request.GET.get('page',1)
+        
+    def get_queryset(self):
+            try:
+                queryset = self.paginator.page(self.page)
+            except PageNotAnInteger:
+                queryset = self.paginator.page(1)
+            except EmptyPage:
+                queryset = self.paginator.page(1)
+            except InvalidPage:
+                queryset = self.paginator.page(1)
+            return queryset
+             
+    
 class ProductList(ListView):
     model = Product
     template_name = 'product/product_list.html'
     context_object_name = 'product_list'
+    paginate_by = 8
 
     def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        page_obj =  CustomPaginator(self.request, self.get_queryset(), self.paginate_by)
+        queryset =  page_obj.get_queryset()
+        paginator = page_obj.paginator
+        context['object_list'] = queryset
+        context['paginator'] = paginator
+        return context
+    
+class SearchProducts(View):
+    def get(self,*args, **kwargs):
+        key = self.request.GET.get('key','')
+        products =  Product.objects.filter(
+            Q(title__icontains=key) |
+            Q(category__title__icontains=key)
+        )
+        context = {
+            'products': products,
+            'key': key
+        }
+        return render(self.request, 'product/search_products.html',context )

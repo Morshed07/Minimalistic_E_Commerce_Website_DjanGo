@@ -45,7 +45,7 @@
                         <li><span>Category :</span> {{product.category.title}}</li>
                     </ul>
                     {% if product.in_stock %}
-                    <form action="" method ="POST">
+                    <form action="{% url "add-to-cart" product.id %}" method ="POST">
                         {% csrf_token %}
                         <button style="cursor: pointer;" type = "submit" class="primary-btn pc-btn">Add to cart</button>
                     </form>

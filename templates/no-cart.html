@@ -1,0 +1,13 @@
+{% load static %}
+
+<div class="row justify-content-center align-items-center">
+    <div class="col-md-5">
+        <img class = "img-fluid"src="{% static 'img/no-cart.png' %}" style = 'width:440px; margin-top: 50px ' alt="no-result">
+        <div class="gap-2 my-5 text-center ">
+            <a class="d-grid text-decoration-none text-dark" href="{% url "product-list" %}">
+                Shop here >>>
+            </a>
+
+        </div>
+    </div>
+</div>

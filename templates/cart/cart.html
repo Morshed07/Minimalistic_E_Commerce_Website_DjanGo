@@ -14,9 +14,9 @@
                     </div>
                 </div>
                 
-                <div class="col-lg-8">
+               <div class="col-lg-8">
                     <img src="{% static 'img/add.jpg' %}" alt="">
-                </div>
+                </div> 
                 
             </div>
             {% endif %}
@@ -30,10 +30,12 @@
         <div class="container">
             <div class="row py-2">
                 <div class="col-md-12">
+                    
                     {% if message %}
                     {% include "messages.html" %}
                     {% endif %}
                 </div>
+               
             </div>
             <div class="cart-table">
                 <table>
@@ -42,7 +44,7 @@
                             <th class="product-h">Product</th>
                             <th>Price</th>
                             <th class="quan">Quantity</th>
-                            <th>Total</th>
+                            <th>Subtotal</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -74,13 +76,20 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <hr>
+                <h4  class="text-center">
+                    <strong>Total = </strong> $ {{cart.total}}
+                </h4>
             </div>
             <div class="cart-btn">
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="coupon-input">
-                            <input type="text" placeholder="Enter cupone code">
-                        </div>
+                        <form action="{% url "add-coupon" %}" method ="POST">
+                            {% csrf_token %}
+                            <div class="coupon-input">
+                                <input name='coupon' type="text" placeholder="Enter cupone code">
+                            </div>
+                        </form>
                     </div>
                     <div class="col-lg-5 offset-lg-1 text-left text-lg-right">
                         <div class="site-btn update-btn">
@@ -89,13 +98,13 @@
                         
                         
                         <div class="site-btn update-btn">
-                            <a class="text-decoration-none text-dark" href="?clear=true">Checkout</a>
+                            <a class="text-decoration-none text-dark" href="#">Checkout</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="shopping-method">
+        {% comment %} <div class="shopping-method">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -153,7 +162,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
     </div>
     {% else %}
     <div class="cart-page">
